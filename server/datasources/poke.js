@@ -1,9 +1,9 @@
-const { RESTdataSource } = require('apollo-datasource-rest');
+const { RESTDataSource } = require('apollo-datasource-rest');
 
-class PokeAPI extends RESTdataSource {
+class PokeAPI extends RESTDataSource {
   constructor() {
     super();
-    this.baseURL = 'https://pokeapi.co/api/v2';
+    this.baseURL = 'https://pokeapi.co/api/v2/';
   }
 
   pokemonReducer(pokemon, pokemonSpecies) {
@@ -13,11 +13,11 @@ class PokeAPI extends RESTdataSource {
       desc: this.getDescription(pokemonSpecies.flavor_text_entries),
       pic: pokemon.sprites.front_default,
       types: this.getTypes(pokemon.types)
-    }
+    };
   }
 
   getDescription(entries) {
-    return entries.find(item => item.language.name === 'en').flavor_text
+    return entries.find(item => item.language.name === 'en').flavor_text;
   }
 
   getTypes(types) {
@@ -26,13 +26,13 @@ class PokeAPI extends RESTdataSource {
         "id": slot,
         "name": type.name
       }
-    })
+    });
   }
 
-  async getPokemonById({id}){
+  async getPokemonById({ id }) {
     const pokemonResponse = await this.get(`pokemon/${id}`);
     const pokemonSpeciesResponse = await this.get(`pokemon-species/${id}`);
-    return this.pokemonReducer(pokemonResponse, pokemonSpeciesResponse)
+    return this.pokemonReducer(pokemonResponse, pokemonSpeciesResponse);
   }
 }
 
